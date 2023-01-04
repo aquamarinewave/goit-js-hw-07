@@ -32,16 +32,28 @@ function clickImg(event) {
   const urlOriginal = event.target.getAttribute('data-source');
 
   const instance = basicLightbox.create(
-    `<img src="${urlOriginal}" width="800" height="800" />`
+    `<img src="${urlOriginal}" width="800" height="800" />`,
+    {
+      onShow: instance => {
+        window.addEventListener("keydown", closeModal);
+      },
+
+      onClose: instance => {
+        window.removeEventListener("keydown", closeModal);
+      }
+    }
+
+
+
   );
   instance.show();
 
-  const closeModal = ({key}) => {
+  function closeModal({key}) {
     if (key === "Escape") {
       instance.close();
-      document.removeEventListener("keydown", closeModal);
+      // return;
     }
   }
-  document.addEventListener("keydown", closeModal);
+ 
 };
 
